@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "CDC20", "label": "CDC20", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MMP12", "label": "MMP12", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MMP1", "label": "MMP1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ADH1B", "label": "ADH1B", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CPB2", "label": "CPB2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TMEM100", "label": "TMEM100", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CENPA /// SLC35F6", "label": "CENPA /// SLC35F6", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TCF21", "label": "TCF21", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "AGER", "label": "AGER", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "KIF2C", "label": "KIF2C", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SPP1", "label": "SPP1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GREM1", "label": "GREM1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SHMT2", "label": "SHMT2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SFTA1P", "label": "SFTA1P", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GJB2", "label": "GJB2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "RRM2", "label": "RRM2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "UHRF1", "label": "UHRF1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SFTPC", "label": "SFTPC", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "WIF1", "label": "WIF1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GKN2", "label": "GKN2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CLDN18", "label": "CLDN18", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GPM6A", "label": "GPM6A", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "DLC1", "label": "DLC1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "EMP2", "label": "EMP2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MFAP4", "label": "MFAP4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "LRRN3", "label": "LRRN3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CLEC3B /// EXOSC7", "label": "CLEC3B /// EXOSC7", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ADIRF", "label": "ADIRF", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FAM107A", "label": "FAM107A", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MT1M", "label": "MT1M", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CA4", "label": "CA4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CLIC5", "label": "CLIC5", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CAV1", "label": "CAV1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TNNC1", "label": "TNNC1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CLDN22 /// WWC2", "label": "CLDN22 /// WWC2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SULF1", "label": "SULF1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ADAM12", "label": "ADAM12", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CTHRC1", "label": "CTHRC1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "COL5A2", "label": "COL5A2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "COL11A1", "label": "COL11A1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "THBS2", "label": "THBS2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TMEM158", "label": "TMEM158", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FNDC1", "label": "FNDC1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CACNA2D2", "label": "CACNA2D2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GPR87", "label": "GPR87", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "S100A2", "label": "S100A2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "KIF11", "label": "KIF11", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FAM46B", "label": "FAM46B", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "NDRG1", "label": "NDRG1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GJB5", "label": "GJB5", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "GJB6", "label": "GJB6", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TRIM59", "label": "TRIM59", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FLRT3", "label": "FLRT3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ACADL", "label": "ACADL", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "PLA2G1B", "label": "PLA2G1B", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CDO1", "label": "CDO1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CHRDL1", "label": "CHRDL1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SLC6A4", "label": "SLC6A4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "VIPR1", "label": "VIPR1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FIGF /// PIR-FIGF", "label": "FIGF /// PIR-FIGF", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CSRNP1", "label": "CSRNP1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MT1HL1", "label": "MT1HL1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MT1E", "label": "MT1E", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SOX17", "label": "SOX17", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MT1X", "label": "MT1X", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MIR22 /// MIR22HG", "label": "MIR22 /// MIR22HG", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MT2A", "label": "MT2A", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "OLFML1", "label": "OLFML1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "EDNRB", "label": "EDNRB", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FOXM1", "label": "FOXM1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "PLLP", "label": "PLLP", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "NCAPG", "label": "NCAPG", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "PLOD2", "label": "PLOD2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "NME1", "label": "NME1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "MMP3", "label": "MMP3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "UBE2C", "label": "UBE2C", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "AQP4", "label": "AQP4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FCN3", "label": "FCN3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "RMI2", "label": "RMI2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "EMCN", "label": "EMCN", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CYYR1", "label": "CYYR1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "TXNIP", "label": "TXNIP", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "CAV2", "label": "CAV2", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "CDC20", "to": "MMP12", "width": 0.2598182106282682}, {"arrows": "to", "from": "MMP12", "to": "MMP1", "width": 0.11490659020975373}, {"arrows": "to", "from": "ADH1B", "to": "MMP12", "width": 0.047184392535807765}, {"arrows": "to", "from": "ADH1B", "to": "CPB2", "width": 0.01607394951507422}, {"arrows": "to", "from": "ADH1B", "to": "TMEM100", "width": 0.02626837658451738}, {"arrows": "to", "from": "CENPA /// SLC35F6", "to": "MMP12", "width": 0.040945989904438186}, {"arrows": "to", "from": "TCF21", "to": "MMP12", "width": 0.03605781478567803}, {"arrows": "to", "from": "TCF21", "to": "AGER", "width": 0.05382158416953271}, {"arrows": "to", "from": "TCF21", "to": "CPB2", "width": 0.07310642073233731}, {"arrows": "to", "from": "TCF21", "to": "TMEM100", "width": 0.01697609611414616}, {"arrows": "to", "from": "KIF2C", "to": "MMP12", "width": 0.027374043252722198}, {"arrows": "to", "from": "SPP1", "to": "MMP12", "width": 0.0224003798481887}, {"arrows": "to", "from": "SPP1", "to": "GREM1", "width": 0.014188282818908503}, {"arrows": "to", "from": "SHMT2", "to": "MMP12", "width": 0.020895678056071}, {"arrows": "to", "from": "SFTA1P", "to": "MMP12", "width": 0.020006526202624664}, {"arrows": "to", "from": "SFTA1P", "to": "GJB2", "width": 0.018342033714203506}, {"arrows": "to", "from": "RRM2", "to": "MMP12", "width": 0.01845050993135204}, {"arrows": "to", "from": "RRM2", "to": "MMP1", "width": 0.06012636412212901}, {"arrows": "to", "from": "UHRF1", "to": "MMP12", "width": 0.01695984680007501}, {"arrows": "to", "from": "SFTPC", "to": "WIF1", "width": 0.2129445131605552}, {"arrows": "to", "from": "SFTPC", "to": "AGER", "width": 0.07730395773175755}, {"arrows": "to", "from": "SFTPC", "to": "CPB2", "width": 0.13336390399257544}, {"arrows": "to", "from": "SFTPC", "to": "GKN2", "width": 0.015192797702013618}, {"arrows": "to", "from": "SFTPC", "to": "CLDN18", "width": 0.016377684492903298}, {"arrows": "to", "from": "GPM6A", "to": "WIF1", "width": 0.10931596231352539}, {"arrows": "to", "from": "GPM6A", "to": "AGER", "width": 0.03906061999673089}, {"arrows": "to", "from": "GPM6A", "to": "CLDN18", "width": 0.10991245278130925}, {"arrows": "to", "from": "DLC1", "to": "WIF1", "width": 0.05002184609700225}, {"arrows": "to", "from": "AGER", "to": "WIF1", "width": 0.03333366280314826}, {"arrows": "to", "from": "AGER", "to": "CPB2", "width": 0.02581970746084608}, {"arrows": "to", "from": "AGER", "to": "GKN2", "width": 0.12120711100053241}, {"arrows": "to", "from": "AGER", "to": "CLDN18", "width": 0.4834294918296971}, {"arrows": "to", "from": "EMP2", "to": "WIF1", "width": 0.02708999091660188}, {"arrows": "to", "from": "MFAP4", "to": "WIF1", "width": 0.025782483165967218}, {"arrows": "to", "from": "LRRN3", "to": "WIF1", "width": 0.02383243807605538}, {"arrows": "to", "from": "CLEC3B /// EXOSC7", "to": "WIF1", "width": 0.01584555052221503}, {"arrows": "to", "from": "CLEC3B /// EXOSC7", "to": "AGER", "width": 0.041824226390423}, {"arrows": "to", "from": "CLEC3B /// EXOSC7", "to": "TMEM100", "width": 0.027083185224554315}, {"arrows": "to", "from": "CLEC3B /// EXOSC7", "to": "GKN2", "width": 0.09682280813296207}, {"arrows": "to", "from": "ADIRF", "to": "WIF1", "width": 0.013442674971062493}, {"arrows": "to", "from": "TMEM100", "to": "WIF1", "width": 0.010927336521268108}, {"arrows": "to", "from": "FAM107A", "to": "AGER", "width": 0.21826391322056465}, {"arrows": "to", "from": "FAM107A", "to": "CPB2", "width": 0.01970139751702343}, {"arrows": "to", "from": "FAM107A", "to": "MT1M", "width": 0.04482054287336987}, {"arrows": "to", "from": "CA4", "to": "AGER", "width": 0.20672584881183748}, {"arrows": "to", "from": "CA4", "to": "TMEM100", "width": 0.28694640211001887}, {"arrows": "to", "from": "CA4", "to": "GKN2", "width": 0.012494599058105068}, {"arrows": "to", "from": "CLIC5", "to": "AGER", "width": 0.1165980961853077}, {"arrows": "to", "from": "CLIC5", "to": "GKN2", "width": 0.021829244540005163}, {"arrows": "to", "from": "CAV1", "to": "AGER", "width": 0.05099347357443491}, {"arrows": "to", "from": "CAV1", "to": "TMEM100", "width": 0.26797288992520313}, {"arrows": "to", "from": "CAV1", "to": "CLDN18", "width": 0.04124692499272083}, {"arrows": "to", "from": "TNNC1", "to": "AGER", "width": 0.04694282213046891}, {"arrows": "to", "from": "TNNC1", "to": "CPB2", "width": 0.29287101319714914}, {"arrows": "to", "from": "TNNC1", "to": "GKN2", "width": 0.01214175820664058}, {"arrows": "to", "from": "CLDN22 /// WWC2", "to": "AGER", "width": 0.012591025128672037}, {"arrows": "to", "from": "SULF1", "to": "GREM1", "width": 0.26588337386256733}, {"arrows": "to", "from": "ADAM12", "to": "GREM1", "width": 0.17076449094227544}, {"arrows": "to", "from": "CTHRC1", "to": "GREM1", "width": 0.16344084686263427}, {"arrows": "to", "from": "COL5A2", "to": "GREM1", "width": 0.07791230270770708}, {"arrows": "to", "from": "COL11A1", "to": "GREM1", "width": 0.043593664337524714}, {"arrows": "to", "from": "THBS2", "to": "GREM1", "width": 0.015990775103614047}, {"arrows": "to", "from": "TMEM158", "to": "GREM1", "width": 0.010003328551951244}, {"arrows": "to", "from": "FNDC1", "to": "GREM1", "width": 0.00740789131144959}, {"arrows": "to", "from": "CACNA2D2", "to": "GREM1", "width": 0.00628834223245955}, {"arrows": "to", "from": "CACNA2D2", "to": "GJB2", "width": 0.013112332506023474}, {"arrows": "to", "from": "CACNA2D2", "to": "CPB2", "width": 0.016031082231014505}, {"arrows": "to", "from": "CACNA2D2", "to": "CLDN18", "width": 0.008635998822905003}, {"arrows": "to", "from": "GPR87", "to": "GJB2", "width": 0.48598136716699025}, {"arrows": "to", "from": "GJB2", "to": "MMP1", "width": 0.030356156824800647}, {"arrows": "to", "from": "S100A2", "to": "GJB2", "width": 0.06036681390090911}, {"arrows": "to", "from": "KIF11", "to": "GJB2", "width": 0.01934702536249271}, {"arrows": "to", "from": "FAM46B", "to": "GJB2", "width": 0.0156356341787854}, {"arrows": "to", "from": "NDRG1", "to": "GJB2", "width": 0.013166959124900372}, {"arrows": "to", "from": "GJB5", "to": "GJB2", "width": 0.012141689032420673}, {"arrows": "to", "from": "GJB6", "to": "GJB2", "width": 0.010985031614721918}, {"arrows": "to", "from": "TRIM59", "to": "GJB2", "width": 0.01090759796978219}, {"arrows": "to", "from": "FLRT3", "to": "CPB2", "width": 0.04944161413572299}, {"arrows": "to", "from": "ACADL", "to": "CPB2", "width": 0.030741433185560503}, {"arrows": "to", "from": "PLA2G1B", "to": "CPB2", "width": 0.022682333481453758}, {"arrows": "to", "from": "CDO1", "to": "TMEM100", "width": 0.023322219845857865}, {"arrows": "to", "from": "CHRDL1", "to": "TMEM100", "width": 0.020094071032223302}, {"arrows": "to", "from": "SLC6A4", "to": "TMEM100", "width": 0.017859242879137156}, {"arrows": "to", "from": "VIPR1", "to": "TMEM100", "width": 0.015609805813073642}, {"arrows": "to", "from": "FIGF /// PIR-FIGF", "to": "TMEM100", "width": 0.014928311386089107}, {"arrows": "to", "from": "CSRNP1", "to": "MT1M", "width": 0.6671299844513683}, {"arrows": "to", "from": "MT1HL1", "to": "MT1M", "width": 0.039200038029032575}, {"arrows": "to", "from": "MT1E", "to": "MT1M", "width": 0.031860189355467555}, {"arrows": "to", "from": "SOX17", "to": "MT1M", "width": 0.012771108369573446}, {"arrows": "to", "from": "MT1X", "to": "MT1M", "width": 0.01148703964965655}, {"arrows": "to", "from": "MIR22 /// MIR22HG", "to": "MT1M", "width": 0.0064732330181905265}, {"arrows": "to", "from": "MT2A", "to": "MT1M", "width": 0.0054217830356123875}, {"arrows": "to", "from": "OLFML1", "to": "MT1M", "width": 0.004105878298794916}, {"arrows": "to", "from": "EDNRB", "to": "MT1M", "width": 0.0036890150360338017}, {"arrows": "to", "from": "FOXM1", "to": "MMP1", "width": 0.05434492543500051}, {"arrows": "to", "from": "PLLP", "to": "MMP1", "width": 0.05420253246304445}, {"arrows": "to", "from": "NCAPG", "to": "MMP1", "width": 0.04742692630432617}, {"arrows": "to", "from": "PLOD2", "to": "MMP1", "width": 0.03719406296435295}, {"arrows": "to", "from": "NME1", "to": "MMP1", "width": 0.025188801423591776}, {"arrows": "to", "from": "MMP3", "to": "MMP1", "width": 0.023767836451815717}, {"arrows": "to", "from": "UBE2C", "to": "MMP1", "width": 0.020647353290282985}, {"arrows": "to", "from": "CLDN18", "to": "GKN2", "width": 0.37408477146024666}, {"arrows": "to", "from": "GKN2", "to": "CLDN18", "width": 0.03295229786974661}, {"arrows": "to", "from": "AQP4", "to": "GKN2", "width": 0.023972938292379602}, {"arrows": "to", "from": "FCN3", "to": "GKN2", "width": 0.01564725329556852}, {"arrows": "to", "from": "RMI2", "to": "GKN2", "width": 0.013840659896292407}, {"arrows": "to", "from": "EMCN", "to": "CLDN18", "width": 0.016090179027640754}, {"arrows": "to", "from": "CYYR1", "to": "CLDN18", "width": 0.013139352240459425}, {"arrows": "to", "from": "TXNIP", "to": "CLDN18", "width": 0.011575785654740925}, {"arrows": "to", "from": "CAV2", "to": "CLDN18", "width": 0.010387190548961204}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
